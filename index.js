@@ -9,24 +9,23 @@
 
 // EXAMPLE SOLUTION CODE:
 function Airplane(name) {
-    this.name = name;
-    this.isFlying = false;
-  }
-  Airplane.prototype.takeOff = function () {
-    this.isFlying = true;
-  };
-  Airplane.prototype.land = function () {
-    this.isFlying = false;
-  };
-  
-  
-  /*
+  this.name = name;
+  this.isFlying = false;
+}
+Airplane.prototype.takeOff = function () {
+  this.isFlying = true;
+};
+Airplane.prototype.land = function () {
+  this.isFlying = false;
+};
+
+/*
   // 👇 COMPLETE YOUR WORK BELOW 👇
   // 👇 COMPLETE YOUR WORK BELOW 👇
   // 👇 COMPLETE YOUR WORK BELOW 👇
   */
-  
-  /*
+
+/*
     TASK 1
       - Write a Person Constructor that initializes `name` and `age` from arguments.
       - All instances of Person should initialize with an empty `stomach` array.
@@ -38,18 +37,32 @@ function Airplane(name) {
       - Give instances of Person a method `.toString()`:
           + It should return a string with `name` and `age`. Example: "Mary, 50"
   */
-  
- function Person() {
-    
-  }
- 
- 
 
-  
-  
-  
-  
-  /*
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
+}
+Person.prototype.eat = function (someFood) {
+  if (this.stomach.length < 10) {
+    this.stomach.push(someFood);
+  }
+};
+Person.prototype.poop = function () {
+  this.stomach = [];
+};
+Person.prototype.toString = function () {
+  return `${this.name}, ${this.age}`;
+}
+
+// const me = new Person("Rika", 23);
+// me.eat("pizza");
+// me.eat("pizza");
+// me.eat("pizza");
+
+
+
+/*
     TASK 2
       - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
       - All instances built with Car:
@@ -62,44 +75,72 @@ function Airplane(name) {
       - STRETCH: A car which runs out of `fuel` while driving can't drive any more distance:
           + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
   */
-  
- function Car() {
-    
+
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+}
+Car.prototype.drive = function (distance) {
+  this.odometer += distance;
+  const milesLeft = this.milesPerGallon * this.tank;
+  this.tank = (milesLeft - distance)/this.milesPerGallon;
+  if (this.tank <= 0) {
+    return `I ran out of fuel at ${this.odometer} miles!`
   }
-  
-  
-  /*
+}
+
+const car1 = new Car('Lexus', 30);
+// console.log(car1);
+car1.fill(10);
+// console.log(car1);
+car1.drive(300);
+console.log(car1.drive(2354));
+
+/*
     TASK 3
       - Write a Baby constructor subclassing Person.
       - Besides `name` and `age`, Baby takes a third argument to initialize `favoriteToy`.
       - Besides the methods on Person.prototype, babies have the ability to `.play()`:
           + Should return a string "Playing with x", x being the favorite toy.
   */
- function Baby() {
-   
-  }
- 
-  
-  /* 
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+}
+Baby.prototype = Object.create(Person.prototype);
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`
+}
+
+
+const baby1 = new Baby("Rira", 0, "binky");
+baby1.eat("cake");
+console.log(baby1);
+
+/* 
     TASK 4
     In your own words explain the four principles for the "this" keyword below:
-    1. 
-    2. 
-    3. 
-    4. 
+    1. Global binding - when you are in global scope, 'this' refers to the window
+    2. Implicit Binding - 'this' is defined by whatever function is called Ex: obj.action ('this' refers to obj) 
+    3. New Binding - used when constructor functions are used and the 'this' refers to the specific object that is created and returned
+    4. Explicit Binding - when using call or apply, you define what 'this' context is
   */
-  
-  
-  ///////// END OF CHALLENGE /////////
 
-  /* 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 */
-function foo(){
-    return 'bar';
+///////// END OF CHALLENGE /////////
+
+/* 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 */
+function foo() {
+  return "bar";
 }
 
-export default{
-    foo,
-    Person, 
-    Car,
-    Baby
-}
+export default {
+  foo,
+  Person,
+  Car,
+  Baby,
+};
